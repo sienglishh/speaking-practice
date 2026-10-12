@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Nghe Nói Tiếng Anh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 420px;
+            text-align: center;
+        }
+        h2 { 
+            color: #333; 
+            font-size: 22px; 
+            margin-bottom: 10px; 
+        }
+        .progress { 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            color: #666; 
+            font-size: 14px; 
+        }
+        .instruction { 
+            color: #555; 
+            margin-bottom: 20px; 
+            font-size: 15px; 
+        }
+        .btn {
+            background: #007bff; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            margin: 8px 0; 
+            width: 100%;
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn-start { background: #17a2b8; font-size: 18px; }
+        .btn-start:hover { background: #138496; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        #mainControls { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Luyện Nghe Tiếng Anh</h2>
+        
+        <div id="startScreen">
+            <p class="instruction">Bấm nút bên dưới để bắt đầu luyện tập nhé!</p>
+            <button class="btn btn-start" onclick="startApp()">▶️ Bắt đầu luyện tập</button>
+        </div>
+
+        <div id="mainControls">
+            <div class="progress" id="progress">Câu 1 / 24</div>
+            <div class="instruction">🎧 Lắng nghe câu hỏi và trả lời:</div>
+            
+            <button class="btn" onclick="playCurrentQuestion()">🔊 Nghe lại câu hỏi</button>
+            <button class="btn btn-success" onclick="nextQuestion()">➡️ Câu tiếp theo</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "Where do you live, and can you describe your home?",
+            "What is your daily routine like from morning to night?",
+            "Who do you usually live or spend time with?",
+            "What do you usually do after work or at the weekend?",
+            "What is your favorite shop or place in your town?",
+            "What do you do for work (or what is your job)?",
+            "What do you like or dislike about your job?",
+            "What kind of job would you like to have in the future?",
+            "Why are you learning English?",
+            "What did you study at school or university?",
+            "What is your favorite hobby, and how often do you do it?",
+            "Do you prefer to spend time alone or with friends?",
+            "What kind of music, films, or books do you like?",
+            "Do you play any sports or do regular exercise?",
+            "Where do you usually go shopping?",
+            "What did you do last weekend?",
+            "Tell me about your last holiday. Where did you go and what did you do?",
+            "What did you eat for dinner yesterday?",
+            "Describe a film or TV show you watched recently.",
+            "Tell me about a special day or celebration you remember.",
+            "What are you going to do next weekend?",
+            "Do you prefer the city or the countryside? Why?",
+            "Where do you want to travel in the future?",
+            "What is one goal you have for the next year?"
+        ];
+
+        let currentIndex = 0;
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function startApp() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('mainControls').style.display = 'block';
+            updateProgress();
+            playCurrentQuestion();
+        }
+
+        function playCurrentQuestion() {
+            speak(questions[currentIndex]);
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex >= questions.length) {
+                currentIndex = 0;
+            }
+            updateProgress();
+            playCurrentQuestion();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').innerText = `Câu ${currentIndex + 1} / ${questions.length}`;
+        }
+    </script>
+</body>
+</html>
